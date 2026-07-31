@@ -1,5 +1,5 @@
-<!DOCTYPE html><html lang="ro"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>CN U16 ARAD 2026</title><style>
-:root{--bg:#0d1117;--panel:#161b22;--border:#30363d;--text:#e6edf3;--muted:#848d97;--accent:#238636}
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>CN U16 ARAD 2026</title><style>
+:root{--bg:#0d1117;--panel:#161b22;--border:#30363d;--text:#e6edf3;--accent:#238636}
 body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);margin:10px;text-align:center}
 .box{background:var(--panel);padding:15px;border-radius:12px;border:1px solid var(--border);margin:15px auto;max-width:980px}
 .vertical-stack{display:flex;flex-direction:column;gap:25px;width:100%}
@@ -8,7 +8,7 @@ body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);mar
 .match{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:left;font-size:13px;margin:5px 0}
 .slot{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #21262d}
 .slot:last-of-type{border-bottom:none}
-.slot span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:145px;padding-right:10px}/* Separă textul de scor */
+.slot span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:145px;padding-right:15px} /* Spațiu forțat între nume și cifre */
 input[type="password"]{background:var(--bg);color:var(--text);padding:6px;border:1px solid var(--border);border-radius:6px;width:120px;text-align:center}
 input[type="number"]{background:var(--panel);color:var(--text);border:1px solid var(--border);width:38px;text-align:center;font-weight:bold}
 .btn{background:var(--accent);color:#fff;padding:8px 15px;border:none;border-radius:6px;font-weight:bold;cursor:pointer}
@@ -28,12 +28,12 @@ input[type="number"]{background:var(--panel);color:var(--text);border:1px solid 
         <div class="box" style="max-width:280px"><h2>🏆 ETAPA FINALĂ</h2><div id="gf"></div></div>
     </div>
 <script>
-    if(!localStorage.getItem('cnu16_securizat_v15')){localStorage.clear();sessionStorage.clear();localStorage.setItem('cnu16_securizat_v15','true');location.reload()}
+    if(!localStorage.getItem('cnu16_final_v16')){localStorage.clear();sessionStorage.clear();localStorage.setItem('cnu16_final_v16','true');location.reload()}
     let adm=(sessionStorage.getItem("is_adm")==="1"),m={},eq=["TISEANU / BUGI","BELEJAN / CHERECHES","CARSTEA / VASILESCU","PRESECAN / SABAU","IUGA / PRIPON","ROMAN / CHINDRIS","BLAJ CIOCOIU / SZATMARY","SERTEA / BRENCIU","CRISAN / MORUZ","BALTA / MOTICA","POP / CIMPAN","ILCA / ROSTAS"];
     function init(){
         const r=(id,t1,t2,n,l,l1,l2)=>m[id]=m[id]||{t1,t2,s1:'',s2:'',n,l,l1,l2,st:''};
-        r('M1',eq[4],eq[11],'M5_1','M9_1');r('M2',eq[7],eq[8],'M6_1','M9_2');r('M3',eq[5],eq[10],'M7_1','M10_1');r('M4',eq[6],eq[9],'M8_1','M10_2');
-        r('M5','',eq[0],'M13_1','M11_2','Câștigătoare M1');r('M6','',eq[3],'M13_2','M12_2','Câștigătoare M2');r('M7','',eq[1],'M14_1','M15_2','Câștigătoare M3');r('M8','',eq[2],'M14_2','M16_2','Câștigătoare M4');
+        r('M1',eq,eq,'M5_1','M9_1');r('M2',eq,eq,'M6_1','M9_2');r('M3',eq,eq,'M7_1','M10_1');r('M4',eq,eq,'M8_1','M10_2');
+        r('M5','',eq,'M13_1','M11_2','Câștigătoare M1');r('M6','',eq,'M13_2','M12_2','Câștigătoare M2');r('M7','',eq,'M14_1','M15_2','Câștigătoare M3');r('M8','',eq,'M14_2','M16_2','Câștigătoare M4');
         r('M13','','','FW_1','M17_2','Câștigătoare M5','Câștigătoare M6');r('M14','','','FW_2','M18_2','Câștigătoare M7','Câștigătoare M8');r('FW','','','MF_1','FL_2','Câștigătoare M13','Câștigătoare M14');
         r('M9','','','M11_1','','Pierzătoare M1','Pierzătoare M2');r('M10','','','M12_1','','Pierzătoare M3','Pierzătoare M4');
         r('M11','','','M15_1','','Câștigătoare M9','Pierzătoare M5');r('M12','','','M16_1','','Câștigătoare M10','Pierzătoare M6');
@@ -57,9 +57,9 @@ input[type="number"]{background:var(--panel);color:var(--text);border:1px solid 
         const x=m[id];x.s1=s1;x.s2=s2;x.st='done';const w=s1>s2?x.t1:x.t2,l=s1>s2?x.t2:x.t1;
         if(x.n){const[nId,p]=x.n.split('_');if(p==='1')m[nId].t1=w;else m[nId].t2=w}
         if(x.l){const[lId,p]=x.l.split('_');if(lId=='FL'&&id==='M18')m[lId].t2=l;else if(p==='1')m[lId].t1=l;else m[lId].t2=l}
-        localStorage.setItem('cnu16_m_final_v15',JSON.stringify(m));render();
+        localStorage.setItem('cnu16_m_final_v16',JSON.stringify(m));render();
     }
     function login(){if(document.getElementById("pass").value==="brizo2026"){adm=true;sessionStorage.setItem("is_adm","1");render()}else{alert("Greșit!")}}
     function logout(){adm=false;sessionStorage.removeItem("is_adm");location.reload()}
-    let sm=localStorage.getItem('cnu16_m_final_v15');init();if(sm){m=JSON.parse(sm)}render();
+    let sm=localStorage.getItem('cnu16_m_final_v16');init();if(sm){m=JSON.parse(sm)}render();
 </script></body></html>

@@ -1,11 +1,11 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>CN U16 ARAD 2026 FEMININ</title><style>:root{--bg:#0d1117;--panel:#161b22;--border:#30363d;--text:#e6edf3;--muted:#848d97;--accent:#238636}body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);text-align:center;margin:10px}.box{background:var(--panel);padding:15px;border-radius:12px;border:1px solid var(--border);margin:20px auto;max-width:1000px}.vertical-stack{display:flex;flex-direction:column;gap:30px;width:100%}.flex-layout{display:flex;gap:15px;justify-content:center;flex-wrap:wrap}.column{display:flex;flex-direction:column;gap:12px;min-width:220px;flex:1}.match{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:left;font-size:13px}input[type="text"]{background:var(--bg);color:var(--text);padding:6px;border:1px solid var(--border);border-radius:6px;width:90%}input[type="number"]{background:var(--panel);color:var(--text);border:1px solid var(--border);width:35px;text-align:center;font-weight:bold;float:right}.btn{background:var(--accent);color:#fff;padding:10px 20px;border:none;border-radius:6px;font-weight:bold;cursor:pointer;width:100%}</style></head><body>
-    <h1>CN U16 ARAD 2026 FEMININ</h1>
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>CN U16 ARAD 2026 FEMININ</title><style>:root{--bg:#0d1117;--panel:#161b22;--border:#30363d;--text:#e6edf3;--muted:#848d97;--accent:#238636}body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);text-align:center;margin:10px}.box{background:var(--panel);padding:15px;border-radius:12px;border:1px solid var(--border);margin:20px auto;max-width:1000px}.vertical-stack{display:flex;flex-direction:column;gap:30px;width:100%}.flex-layout{display:flex;gap:15px;justify-content:center;flex-wrap:wrap}.column{display:flex;flex-direction:column;gap:12px;min-width:220px;flex:1}.match{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:left;font-size:13px}input[type="text"]{background:var(--bg);color:var(--text);padding:6px;border:1px solid var(--border);border-radius:6px;width:90%}input[type="number"]{background:var(--panel);color:var(--text);border:1px solid var(--border);width:35px;text-align:center;font-weight:bold;float:right}.btn{background:var(--accent);color:#fff;padding:10px 20px;border:none;border-radius:6px;font-weight:bold;cursor:pointer;width:100%}.admin-only{display:none!important}</style></head><body>
+    <h1 onclick="cereParola()" style="cursor:pointer;" title="Click aici pentru autentificare Admin">CN U16 ARAD 2026 FEMININ 🔒</h1>
     <div id="setup" class="box" style="max-width:480px;display:none">
         <h3>Configurare Poziții Echipe (12 Echipe)</h3><p style="font-size:11px;color:var(--muted)">Primele 4 au BYE în primul tur.</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="inputs"></div><br><button class="btn" onclick="start()">Creează și Salvează Tabloul</button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="inputs"></div><br><button class="btn admin-only" id="btn-salveaza-echipe" onclick="start()">Creează și Salvează Tabloul</button>
     </div>
     <div id="app" style="padding:5px">
-        <button class="btn" style="background:#30363d;width:auto;margin-bottom:15px" onclick="localStorage.clear();location.reload()">🔄 Modifică Echipele</button>
+        <button class="btn admin-only" id="btn-modifica" style="background:#30363d;width:auto;margin-bottom:15px" onclick="localStorage.removeItem('ar_cnu16_v8');location.reload()">🔄 Modifică Echipele</button>
         <div class="vertical-stack">
             <div class="box">
                 <h2>🌿 RUTA CÂȘTIGĂTORILOR</h2>
@@ -30,8 +30,8 @@
         <div class="box" style="max-width:280px"><h2>🏆 ETAPA FINALĂ</h2><div id="gf"></div></div>
     </div>
 <script>
-    // CURĂȚARE TOTALĂ A CACHE-ULUI DEFECT LA PORNIRE
-    localStorage.clear();
+    const PAROLA_CORECTA = "brizo2026"; // SCHIMBĂ AICI PAROLA DACĂ DOREȘTI ALTA
+    let esteAdmin = false;
 
     const de=["TISEANU / BUGI","BELEJAN / CHERECHES","CARSTEA / VASILESCU","PRESECAN / SABAU","IUGA / PRIPON","ROMAN / CHINDRIS","BLAJ CIOCOIU / SZATMARY","SERTEA / BRENCIU","CRISAN / MORUZ","BALTA / MOTICA","POP / CIMPAN","ILCA / ROSTAS"];
     const container=document.getElementById('inputs');de.forEach((v,i)=>container.innerHTML+=`<input type="text" id="t${i+1}" value="${v}">`);
@@ -39,35 +39,19 @@
     let m={};
     function init(){
         const r=(id,t1,t2,n,l,l1,l2)=>m[id]={t1,t2,s1:'',s2:'',n,l,l1,l2,st:''};
-        // Distribuire curată și fixă pe fiecare meci în parte
-        r('Meci 1',de[4],de[11],'Meci 5_t1','Meci 9_t1');
-        r('Meci 2',de[7],de[8],'Meci 6_t1','Meci 9_t2');
-        r('Meci 3',de[5],de[10],'Meci 7_t1','Meci 10_t1');
-        r('Meci 4',de[6],de[9],'Meci 8_t1','Meci 10_t2');
-        
-        r('Meci 5','',de[0],'Meci 13_t1','Meci 11_t2','Câștigătoare M1');
-        r('Meci 6','',de[3],'Meci 13_t2','Meci 12_t2','Câștigătoare M2');
-        r('Meci 7','',de[1],'Meci 14_t1','Meci 15_t2','Câștigătoare M3');
-        r('Meci 8','',de[2],'Meci 14_t2','Meci 16_t2','Câștigătoare M4');
-        
-        r('Meci 13','','','Finala W_t1','Meci 17_t2','Câștigătoare M5','Câștigătoare M6');
-        r('Meci 14','','','Finala W_t2','Meci 18_t2','Câștigătoare M7','Câștigătoare M8');
-        r('Finala W','','','Marea Finală_t1','Finala L_t2','Câștigătoare M13','Câștigătoare M14');
-        
-        r('Meci 9','','','Meci 11_t1','','Pierzătoare M1','Pierzătoare M2');
-        r('Meci 10','','','Meci 12_t1','','Pierzătoare M3','Pierzătoare M4');
-        r('Meci 11','','','Meci 15_t1','','Câștigătoare M9','Pierzătoare M5');
-        r('Meci 12','','','Meci 16_t1','','Câștigătoare M10','Pierzătoare M6');
-        r('Meci 15','','','Meci 17_t1','','Câștigătoare M11','Pierzătoare M7');
-        r('Meci 16','','','Meci 18_t1','','Câștigătoare M12','Pierzătoare M8');
-        r('Meci 17','','','Finala L_t1','','Câștigătoare M15','Pierzătoare M9');
-        r('Meci 18','','','Finala L_t2','','Câștigătoare M16','Pierzătoare M10');
-        r('Finala L','','','Marea Finală_t2','','Câștigătoare M17','Pierzătoare M13');
-        r('Marea Finală','','','','','Câștigătoare Winners','Câștigătoare Losers');
+        r('Meci 1',de[4],de[11],'Meci 5_t1','Meci 9_t1');r('Meci 2',de[7],de[8],'Meci 6_t1','Meci 9_t2');r('Meci 3',de[5],de[10],'Meci 7_t1','Meci 10_t1');r('Meci 4',de[6],de[9],'Meci 8_t1','Meci 10_t2');
+        r('Meci 5','',de[0],'Meci 13_t1','Meci 11_t2','Câștigătoare M1');r('Meci 6','',de[3],'Meci 13_t2','Meci 12_t2','Câștigătoare M2');r('Meci 7','',de[1],'Meci 14_t1','Meci 15_t2','Câștigătoare M3');r('Meci 8','',de[2],'Meci 14_t2','Meci 16_t2','Câștigătoare M4');
+        r('Meci 13','','','Finala W_t1','Meci 17_t2','Câștigătoare M5','Câștigătoare M6');r('Meci 14','','','Finala W_t2','Meci 18_t2','Câștigătoare M7','Câștigătoare M8');r('Finala W','','','Marea Finală_t1','Finala L_t2','Câștigătoare M13','Câștigătoare M14');
+        r('Meci 9','','','Meci 11_t1','','Pierzătoare M1','Pierzătoare M2');r('Meci 10','','','Meci 12_t1','','Pierzătoare M3','Pierzătoare M4');
+        r('Meci 11','','','Meci 15_t1','','Câștigătoare M9','Pierzătoare M5');r('Meci 12','','','Meci 16_t1','','Câștigătoare M10','Pierzătoare M6');
+        r('Meci 15','','','Meci 17_t1','','Câștigătoare M11','Pierzătoare M7');r('Meci 16','','','Meci 18_t1','','Câștigătoare M12','Pierzătoare M8');
+        r('Meci 17','','','Finala L_t1','','Câștigătoare M15','Pierzătoare M9');r('Meci 18','','','Finala L_t2','','Câștigătoare M16','Pierzătoare M10');
+        r('Finala L','','','Marea Finală_t2','','Câștigătoare M17','Pierzătoare M13');r('Marea Finală','','','','','Câștigătoare Winners','Câștigătoare Losers');
     }
 
     function render(){
-        const h=(id,lbl)=>{const x=m[id];const act=(x.t1&&x.t2&&x.st!=='done');return `<div class="match"><b>${lbl}</b><div style="margin:4px 0"><span>${x.t1||`<i>${x.l1||'Așteaptă'}</i>`}</span>${act?`<input type="number" id="s1_${id}">`: `<b>${x.s1}</b>`}</div><div><span>${x.t2||`<i>${x.l2||'Așteaptă'}</i>`}</span>${act?`<input type="number" id="s2_${id}">`: `<b>${x.s2}</b>`}</div>${act?`<button style="width:100%;margin-top:6px;background:var(--accent);color:#fff;border:none;border-radius:4px;cursor:pointer" onclick="save('${id}')">Trimite</button>`:''}</div>`};
+        const h=(id,lbl)=>{const x=m[id];const act=(x.t1&&x.t2&&x.st!=='done');
+        return `<div class="match"><b>${lbl}</b><div style="margin:4px 0"><span>${x.t1||`<i>${x.l1||'Așteaptă'}</i>`}</span>${act&&esteAdmin?`<input type="number" id="s1_${id}">`: (x.s1!==''?`<b>${x.s1}</b>`:'')}</div><div><span>${x.t2||`<i>${x.l2||'Așteaptă'}</i>`}</span>${act&&esteAdmin?`<input type="number" id="s2_${id}">`: (x.s2!==''?`<b>${x.s2}</b>`:'')}</div>${act&&esteAdmin?`<button class="btn" style="padding:4px;margin-top:6px;font-size:12px;" onclick="save('${id}')">Trimite Scor</button>`:''}</div>`};
         document.getElementById('w1').innerHTML='<h4>Turul 1</h4>'+h('Meci 1','Meci 1')+h('Meci 2','Meci 2')+h('Meci 3','Meci 3')+h('Meci 4','Meci 4');
         document.getElementById('w2').innerHTML='<h4>Sferturi</h4>'+h('Meci 5','Meci 5')+h('Meci 6','Meci 6')+h('Meci 7','Meci 7')+h('Meci 8','Meci 8');
         document.getElementById('w3').innerHTML='<h4>Semifinale</h4>'+h('Meci 13','Meci 13')+h('Meci 14','Meci 14');
@@ -78,6 +62,9 @@
         document.getElementById('l4').innerHTML='<h4>Losers T4</h4>'+h('Meci 17','Meci 17')+h('Meci 18','Meci 18');
         document.getElementById('l5').innerHTML='<h4>Finală Losers</h4>'+h('Finala L','Finala Losers');
         document.getElementById('gf').innerHTML=h('Marea Finală','Marea Finală');
+        
+        // Control vizibilitate elemente administrative
+        document.querySelectorAll('.admin-only').forEach(el => el.style.setProperty('display', esteAdmin ? 'block' : 'none', 'important'));
     }
 
     function save(id){
@@ -86,8 +73,40 @@
         const x=m[id];x.s1=s1;x.s2=s2;x.st='done';const w=s1>s2?x.t1:x.t2,l=s1>s2?x.t2:x.t1;
         if(x.n){const[nId,p]=x.n.split('_');if(p==='t1')m[nId].t1=w;else m[nId].t2=w}
         if(x.l){const[lId,p]=x.l.split('_');if(p==='t1')m[lId].t1=l;else m[lId].t2=l}
+        localStorage.setItem('cnu16_meciuri_v8', JSON.stringify(m));
         render();
     }
 
-    init();render();
+    function cereParola() {
+        const p = prompt("Introduceți parola de administrator pentru a debloca modificările:");
+        if (p === PAROLA_CORECTA) {
+            esteAdmin = true;
+            sessionStorage.setItem("admin_activat", "true");
+            alert("Autentificare reușită! Opțiunile de modificare au fost deblocate.");
+            render();
+        } else if (p !== null) {
+            alert("Parolă incorectă! Tabloul rămâne în modul de doar vizualizare.");
+        }
+    }
+
+    function start(){
+        let customEchipe = [];
+        for (let i = 1; i <= 12; i++) customEchipe.push(document.getElementById('t'+i).value);
+        localStorage.setItem('ar_cnu16_v8', JSON.stringify(customEchipe));
+        location.reload();
+    }
+
+    // Verifică dacă adminul a fost deja deblocat în această sesiune
+    if (sessionStorage.getItem("admin_activat") === "true") { esteAdmin = true; }
+
+    // Încărcare date
+    let salvatEchipe = localStorage.getItem('ar_cnu16_v8');
+    let salvatMeciuri = localStorage.getItem('cnu16_meciuri_v8');
+    if(salvatEchipe){
+        let parsed = JSON.parse(salvatEchipe);
+        parsed.forEach((v,i)=> de[i] = v);
+    }
+    init();
+    if(salvatMeciuri){ m = JSON.parse(salvatMeciuri); }
+    render();
 </script></body></html>

@@ -24,14 +24,14 @@
     }
     function init(){
         const r=(id,t1,t2,n,l,l1,l2)=>m[id]={t1,t2,s1:'',s2:'',n,l,l1,l2,st:''};
-        r('Meci 1',e[4],e[11],'M5_1','M9_1');r('Meci 2',e[7],e[8],'M6_1','M9_2');r('Meci 3',e[5],e[10],'M7_1','M10_1');r('Meci 4',e[6],e[9],'M8_1','M10_2');
-        r('Meci 5','',e[0],'M13_1','M11_2');r('Meci 6','',e[3],'M13_2','M12_2');r('Meci 7','',e[1],'M14_1','M15_2');r('Meci 8','',e[2],'M14_2','M16_2');
-        r('Meci 13','','','M19_1','M17_2');r('Meci 14','','','M19_2','M18_2');r('Finala W','','','MF_1','M21_2');
+        r('Meci 1',e,e,'M5_1','M9_1');r('Meci 2',e,e,'M6_1','M9_2');r('Meci 3',e,e,'M7_1','M10_1');r('Meci 4',e,e,'M8_1','M10_2');
+        r('Meci 5','',e,'M13_1','M11_2','Câștigătoare M1');r('Meci 6','',e,'M13_2','M12_2','Câștigătoare M2');r('Meci 7','',e,'M14_1','M15_2','Câștigătoare M3');r('Meci 8','',e,'M14_2','M16_2','Câștigătoare M4');
+        r('Meci 13','','','M19_1','M17_2','Câștigătoare M5','Câștigătoare M6');r('Meci 14','','','M19_2','M18_2','Câștigătoare M7','Câștigătoare M8');r('Finala W','','','MF_1','M21_2','Câștigătoare M13','Câștigătoare M14');
         r('Meci 9','','','M11_1','','Pierzătoare M1','Pierzătoare M2');r('Meci 10','','','M12_1','','Pierzătoare M3','Pierzătoare M4');
-        r('Meci 11','','','M15_1','','','Pierzătoare M5');r('Meci 12','','','M16_1','','','Pierzătoare M6');
-        r('Meci 15','','','M17_1','','','Pierzătoare M7');r('Meci 16','','','M18_1','','','Pierzătoare M8');
-        r('Meci 17','','','M21_1','','','Pierzătoare M9');r('Meci 18','','','M21_2','','','Pierzătoare M10');
-        r('Finala L','','','MF_2','','','Pierzătoare M13');r('Marea Finală','','','');
+        r('Meci 11','','','M15_1','','Câștigătoare M9','Pierzătoare M5');r('Meci 12','','','M16_1','','Câștigătoare M10','Pierzătoare M6');
+        r('Meci 15','','','M17_1','','Câștigătoare M11','Pierzătoare M7');r('Meci 16','','','M18_1','','Câștigătoare M12','Pierzătoare M8');
+        r('Meci 17','','','M21_1','','Câștigătoare M15','Pierzătoare M9');r('Meci 18','','','M21_2','','Câștigătoare M16','Pierzătoare M10');
+        r('Finala L','','','MF_2','','Câștigătoare M17','Pierzătoare M13');r('Marea Finală','','','','','Câștigătoare Winners','Câștigătoare Losers');
     }
     function render(){
         const h=(id,lbl)=>{const x=m[id];const act=(x.t1&&x.t2&&x.st!=='done');return `<div class="match"><b>${lbl}</b><div style="margin:4px 0"><span>${x.t1||`<i>${x.l1||'Așteaptă'}</i>`}</span>${act?`<input type="number" id="s1_${id}">`: `<b>${x.s1}</b>`}</div><div><span>${x.t2||`<i>${x.l2||'Așteaptă'}</i>`}</span>${act?`<input type="number" id="s2_${id}">`: `<b>${x.s2}</b>`}</div>${act?`<button style="width:100%;margin-top:6px;background:var(--accent);color:#fff;border:none;border-radius:4px;cursor:pointer" onclick="save('${id}')">Trimite</button>`:''}</div>`};

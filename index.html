@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -7,14 +6,14 @@
     <title>Tablou Grafic Dublă Eliminare - GitHub Style</title>
     <style>
         :root {
-            --bg-color: #0d1117;        /* Fundalul principal GitHub */
-            --panel-bg: #161b22;        /* Fundalul cardurilor/containerelor */
-            --border-color: #30363d;    /* Culoarea liniilor și marginilor */
-            --text-main: #e6edf3;       /* Textul alb/gri deschis */
-            --text-muted: #848d97;      /* Textul secundar gri */
-            --primary-accent: #238636;  /* Verdele oficial pentru butoane/acțiuni */
-            --primary-hover: #2ea043;   /* Verde aprins la trecerea mouse-ului */
-            --active-bg: #1f242c;       /* Highlight meci activ */
+            --bg-color: #0d1117;        
+            --panel-bg: #161b22;        
+            --border-color: #30363d;    
+            --text-main: #e6edf3;       
+            --text-muted: #848d97;      
+            --primary-accent: #238636;  
+            --primary-hover: #2ea043;   
+            --active-bg: #1f242c;       
         }
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; 
@@ -34,7 +33,6 @@
         .btn-generate { display: block; width: 100%; padding: 12px; background: var(--primary-accent); color: white; border: 1px solid rgba(240,246,252,0.1); border-radius: 6px; font-weight: 600; font-size: 15px; cursor: pointer; transition: background 0.2s; }
         .btn-generate:hover { background: var(--primary-hover); }
         
-        /* Structura Grafică a Tabloului */
         .bracket-container { display: flex; flex-direction: column; gap: 40px; padding: 10px; overflow-x: auto; }
         .bracket-title { background: #21262d; color: var(--text-main); padding: 12px; border-radius: 6px; font-size: 14px; font-weight: 600; text-transform: uppercase; margin-top: 20px; border: 1px solid var(--border-color); }
         .bracket-section { display: flex; gap: 30px; background: var(--panel-bg); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); min-width: max-content; }
@@ -42,7 +40,6 @@
         .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 240px; position: relative; }
         .round-title { font-size: 13px; text-align: center; font-weight: 600; color: var(--text-muted); margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
         
-        /* Casetă Meci și Linii Conectare în stil GitHub */
         .matchup { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; margin: 15px 0; position: relative; transition: all 0.3s; }
         .matchup.active { border-color: #58a6ff; background: var(--active-bg); box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.15); }
         .match-title { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -56,7 +53,6 @@
         .matchup button { width: 100%; padding: 6px; font-size: 12px; margin-top: 10px; background: #21262d; color: #c9d1d9; border: 1px solid var(--border-color); border-radius: 6px; font-weight: 600; cursor: pointer; }
         .matchup button:hover { background: #30363d; color: var(--text-main); border-color: #848d97; }
 
-        /* Conectori Vizuali */
         .round:not(:last-child) .matchup::after { content: ""; position: absolute; right: -30px; top: 50%; width: 30px; border-bottom: 2px solid var(--border-color); z-index: 1; }
         .round:not(:first-child) .matchup::before { content: ""; position: absolute; left: -30px; top: 50%; width: 30px; border-bottom: 2px solid var(--border-color); z-index: 1; }
     </style>
@@ -66,7 +62,6 @@
     <h1>Management Turneu</h1>
     <h2>Sistem Grafic cu Dublă Eliminare (12 Echipe)</h2>
 
-    <!-- Ecran Inițial Configurare -->
     <div class="setup-section" id="setup">
         <h3 style="margin-top:0;">Configurare Echipe</h3>
         <p style="font-size: 13px; color: var(--text-muted); text-align: center; margin-bottom: 20px;">Primele 4 poziții sunt alocate capilor de serie principali (calificați direct în Sferturi).</p>
@@ -74,9 +69,7 @@
         <button class="btn-generate" onclick="genereazaTurneu()">Creează Tablou Întunecat</button>
     </div>
 
-    <!-- Container Grafic Principal -->
     <div class="bracket-container" id="bracket" style="display: none;">
-        
         <div class="bracket-title">🌿 WINNERS BRACKET</div>
         <div class="bracket-section">
             <div class="round"><div class="round-title">Turul 1</div><div id="w-r1"></div></div>
@@ -99,12 +92,10 @@
             <div class="round"><div class="round-title">Marea Finală</div><div id="grand-final"></div></div>
         </div>
     </div>
-
     <script>
-        // Forțăm browserul să genereze inputurile abia după ce a citit tot HTML-ul
         window.onload = function() {
             const container = document.getElementById('inputs-container');
-            container.innerHTML = ''; // Curățăm spațiul
+            container.innerHTML = ''; 
             for (let i = 1; i <= 12; i++) {
                 container.innerHTML += `<input type="text" id="t${i}" value="Echipa ${i}" placeholder="Echipa ${i}">`;
             }
@@ -141,57 +132,80 @@
                 'L4': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L6_t1', status: 'wait' },
                 'L5': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L7_t1', status: 'wait' },
                 'L6': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L8_t1', status: 'wait' },
-                'L7': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L9_t1', status: 'wait' },'L8': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L9_t2', status: 'wait' },
-'L9': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'F1_t2', status: 'wait' },
-'F1': { t1: '', t2: '', s1: null, s2: null, status: 'wait' }
-};
-document.getElementById('setup').style.display = 'none';
-document.getElementById('bracket').style.display = 'block';
-randeazaTablou();
-}
-function randeazaMeci(id, eticheta) {
-const m = meciuri[id];
-const esteActiv = (m.t1 && m.t2 && m.status !== 'done');
-return <div class="matchup ${esteActiv ? 'active' : ''}"> <div class="match-title">${eticheta}</div> <div class="slot"><span>${m.t1 || '<i>Așteaptă</i>'}</span> ${esteActiv ?:${m.s1 !== null ? m.s1 : ''}}</div> <div class="slot"><span>${m.t2 || '<i>Așteaptă</i>'}</span> ${esteActiv ? :${m.s2 !== null ? m.s2 : ''}}</div> ${esteActiv ? Trimite Scor: ''} </div>;
-}
-function randeazaTablou() {
-document.getElementById('w-r1').innerHTML = randeazaMeci('W1', 'Meci 1') + randeazaMeci('W2', 'Meci 2') + randeazaMeci('W3', 'Meci 3') + randeazaMeci('W4', 'Meci 4');
-document.getElementById('w-r2').innerHTML = randeazaMeci('W5', 'Meci 5') + randeazaMeci('W6', 'Meci 6') + randeazaMeci('W7', 'Meci 7') + randeazaMeci('W8', 'Meci 8');
-document.getElementById('w-r3').innerHTML = randeazaMeci('W9', 'Meci 13') + randeazaMeci('W10', 'Meci 14');
-document.getElementById('w-r4').innerHTML = randeazaMeci('W11', 'Finala Winners');
-document.getElementById('l-r1').innerHTML = randeazaMeci('L1', 'Meci 9') + randeazaMeci('L2', 'Meci 10');
-document.getElementById('l-r2').innerHTML = randeazaMeci('L3', 'Meci 11') + randeazaMeci('L4', 'Meci 12');
-document.getElementById('l-r3').innerHTML = randeazaMeci('L5', 'Meci 15') + randeazaMeci('L6', 'Meci 16');
-document.getElementById('l-r4').innerHTML = randeazaMeci('L7', 'Meci 17') + randeazaMeci('L8', 'Meci 18');
-document.getElementById('l-r5').innerHTML = randeazaMeci('L9', 'Finala Losers');
-document.getElementById('grand-final').innerHTML = randeazaMeci('F1', 'Marea Finală');
-}
-function salveazaScor(id) {
-const sc1 = parseInt(document.getElementById(s1_${id}).value);
-const sc2 = parseInt(document.getElementById(s2_${id}).value);
-if (isNaN(sc1) || isNaN(sc2) || sc1 === sc2) {
-alert("Te rog introdu un scor valid (fără egalitate!).");
-return;
-}
-const m = meciuri[id];
-m.s1 = sc1;
-m.s2 = sc2;
-m.status = 'done';
-const castigator = sc1 > sc2 ? m.t1 : m.t2;
-const pierzator = sc1 > sc2 ? m.t2 : m.t1;
-if (m.urmatorul) {
-const [urmatorId, slot] = m.urmatorul.split('_');
-meciuri[urmatorId][slot] = castigator;
-}
-if (m.pierzator) {
-const [pierzatorId, slot] = m.pierzator.split('_');
-meciuri[pierzatorId][slot] = pierzator;
-}
-if (id === 'F1') {
-alert(Turneul s-a încheiat! Campioană: ${castigator});
-}
-randeazaTablou();
-}
+                'L7': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L9_t1', status: 'wait' },
+                'L8': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L9_t2', status: 'wait' },
+                'L9': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'F1_t2', status: 'wait' },
 
+                'F1': { t1: '', t2: '', s1: null, s2: null, status: 'wait' }
+            };
 
+            document.getElementById('setup').style.display = 'none';
+            document.getElementById('bracket').style.display = 'block';
+            randeazaTablou();
+        }
+
+        function randeazaMeci(id, eticheta) {
+            const m = meciuri[id];
+            const esteActiv = (m.t1 && m.t2 && m.status !== 'done');
+            return `
+                <div class="matchup ${esteActiv ? 'active' : ''}">
+                    <div class="match-title">${eticheta}</div>
+                    <div class="slot"><span>${m.t1 || '<i>Așteaptă</i>'}</span> ${esteActiv ? `<input type="number" id="s1_${id}">` : `<b>${m.s1 !== null ? m.s1 : ''}</b>`}</div>
+                    <div class="slot"><span>${m.t2 || '<i>Așteaptă</i>'}</span> ${esteActiv ? `<input type="number" id="s2_${id}">` : `<b>${m.s2 !== null ? m.s2 : ''}</b>`}</div>
+                    ${esteActiv ? `<button onclick="salveazaScor('${id}')">Trimite Scor</button>` : ''}
+                </div>
+            `;
+        }
+
+        function randeazaTablou() {
+            document.getElementById('w-r1').innerHTML = randeazaMeci('W1', 'Meci 1') + randeazaMeci('W2', 'Meci 2') + randeazaMeci('W3', 'Meci 3') + randeazaMeci('W4', 'Meci 4');
+            document.getElementById('w-r2').innerHTML = randeazaMeci('W5', 'Meci 5') + randeazaMeci('W6', 'Meci 6') + randeazaMeci('W7', 'Meci 7') + randeazaMeci('W8', 'Meci 8');
+            document.getElementById('w-r3').innerHTML = randeazaMeci('W9', 'Meci 13') + randeazaMeci('W10', 'Meci 14');
+            document.getElementById('w-r4').innerHTML = randeazaMeci('W11', 'Finala Winners');
+            
+            document.getElementById('l-r1').innerHTML = randeazaMeci('L1', 'Meci 9') + randeazaMeci('L2', 'Meci 10');
+            document.getElementById('l-r2').innerHTML = randeazaMeci('L3', 'Meci 11') + randeazaMeci('L4', 'Meci 12');
+            document.getElementById('l-r3').innerHTML = randeazaMeci('L5', 'Meci 15') + randeazaMeci('L6', 'Meci 16');
+            document.getElementById('l-r4').innerHTML = randeazaMeci('L7', 'Meci 17') + randeazaMeci('L8', 'Meci 18');
+            document.getElementById('l-r5').innerHTML = randeazaMeci('L9', 'Finala Losers');
+            
+            document.getElementById('grand-final').innerHTML = randeazaMeci('F1', 'Marea Finală');
+        }
+
+        function salveazaScor(id) {
+            const sc1 = parseInt(document.getElementById(`s1_${id}`).value);
+            const sc2 = parseInt(document.getElementById(`s2_${id}`).value);
+
+            if (isNaN(sc1) || isNaN(sc2) || sc1 === sc2) {
+                alert("Te rog introdu un scor valid (fără egalitate!).");
+                return;
+            }
+
+            const m = meciuri[id];
+            m.s1 = sc1;
+            m.s2 = sc2;
+            m.status = 'done';
+
+            const castigator = sc1 > sc2 ? m.t1 : m.t2;
+            const pierzator = sc1 > sc2 ? m.t2 : m.t1;
+
+            if (m.urmatorul) {
+                const [urmatorId, slot] = m.urmatorul.split('_');
+                meciuri[urmatorId][slot] = castigator;
+            }
+
+            if (m.pierzator) {
+                const [pierzatorId, slot] = m.pierzator.split('_');
+                meciuri[pierzatorId][slot] = pierzator;
+            }
+
+            if (id === 'F1') {
+                alert(`Turneul s-a încheiat! Campioană: ${castigator}`);
+            }
+
+            randeazaTablou();
+        }
+    </script>
+</body>
+</html>
 

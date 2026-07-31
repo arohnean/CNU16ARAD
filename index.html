@@ -1,11 +1,58 @@
-<!DOCTYPE html>
-<html lang="ro">
-<head>
-    <meta charset="UTF-8">
-    <title>CN U16 ARAD 2026 FEMININ</title>
-    <style>html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }</style>
-</head>
-<body>
-    <iframe src="https://pastebin.com" style="width:100%; height:100%; border:none;"></iframe>
-</body>
-</html>
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>CN U16 ARAD 2026 FEMININ</title><style>:root{--bg:#0d1117;--panel:#161b22;--border:#30363d;--text:#e6edf3;--muted:#848d97;--accent:#238636}body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);text-align:center;margin:10px}.box{background:var(--panel);padding:15px;border-radius:12px;border:1px solid var(--border);margin:10px auto}.flex-layout{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;min-width:max-content}.column{display:flex;flex-direction:column;gap:15px;min-width:230px}.match{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:left;font-size:13px}input[type="text"]{background:var(--bg);color:var(--text);padding:6px;border:1px solid var(--border);border-radius:6px;width:90%}input[type="number"]{background:var(--panel);color:var(--text);border:1px solid var(--border);width:35px;text-align:center;font-weight:bold;float:right}.btn{background:var(--accent);color:#fff;padding:10px 20px;border:none;border-radius:6px;font-weight:bold;cursor:pointer;width:100%}</style></head><body>
+    <h1>CN U16 ARAD 2026 FEMININ</h1>
+    <div id="setup" class="box" style="max-width:480px">
+        <h3>Configurare Poziții Echipe (12 Echipe)</h3><p style="font-size:11px;color:var(--muted)">Primele 4 au BYE în primul tur.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="inputs"></div><br><button class="btn" onclick="start()">Creează și Salvează Tabloul</button>
+    </div>
+    <div id="app" style="display:none;padding:10px;overflow-x:auto">
+        <button class="btn" style="background:#30363d;width:auto;margin-bottom:15px" onclick="localStorage.clear();location.reload()">🔄 Modifică Echipele</button>
+        <div class="flex-layout">
+            <div class="box"><h2>🌿 RUTA CÂȘTIGĂTORILOR</h2><div class="flex-layout"><div class="column" id="w1"><h4>Turul 1</h4></div><div class="column" id="w2"><h4>Sferturi</h4></div><div class="column" id="w3"><h4>Semifinale</h4></div><div class="column" id="w4"><h4>Finală Rutz</h4></div></div></div>
+            <div class="box"><h2>🍂 RUTA PIERZĂTORILOR</h2><div class="flex-layout"><div class="column" id="l1"><h4>Faza 1</h4></div><div class="column" id="l2"><h4>Faza 2</h4></div><div class="column" id="l3"><h4>Faza 3</h4></div><div class="column" id="l4"><h4>Faza 4</h4></div><div class="column" id="l5"><h4>Finală Pierzători</h4></div></div></div>
+        </div>
+        <div class="box" style="max-width:300px"><h2>🏆 ETAPA FINALĂ</h2><div id="gf"></div></div>
+    </div>
+<script>
+    const de=["TISEANU / BUGI","BELEJAN / CHERECHES","CARSTEA / VASILESCU","PRESECAN / SABAU","IUGA / PRIPON","ROMAN / CHINDRIS","BLAJ CIOCOIU / SZATMARY","SERTEA / BRENCIU","CRISAN / MORUZ","BALTA / MOTICA","POP / CIMPAN","ILCA / ROSTAS"];
+    const container=document.getElementById('inputs');de.forEach((v,i)=>container.innerHTML+=`<input type="text" id="t${i+1}" value="${v}">`);
+    let e=[],m={};
+    function start(){
+        e=[];for(let i=1;i<=12;i++)e.push(document.getElementById('t'+i).value);
+        localStorage.setItem('cnu16_v3',JSON.stringify(e));
+        document.getElementById('setup').style.display='none';document.getElementById('app').style.display='block';
+        init();render();
+    }
+    function init(){
+        const r=(id,t1,t2,n,l,l1,l2)=>m[id]={t1,t2,s1:'',s2:'',n,l,l1,l2,st:''};
+        r('Meci 1',e[4],e[11],'M5_1','M9_1');r('Meci 2',e[7],e[8],'M6_1','M9_2');r('Meci 3',e[5],e[11],'M7_1','M10_1');r('Meci 4',e[6],e[9],'M8_1','M10_2');
+        r('Meci 5','',e[0],'M13_1','M11_2');r('Meci 6','',e[3],'M13_2','M12_2');r('Meci 7','',e[1],'M14_1','M15_2');r('Meci 8','',e[2],'M14_2','M16_2');
+        r('Meci 13','','','M19_1','M17_2');r('Meci 14','','','M19_2','M18_2');r('Finala W','','','MF_1','M21_2');
+        r('Meci 9','','','M11_1','','Pierzătoare M1','Pierzătoare M2');r('Meci 10','','','M12_1','','Pierzătoare M3','Pierzătoare M4');
+        r('Meci 11','','','M15_1','','','Pierzătoare M5');r('Meci 12','','','M16_1','','','Pierzătoare M6');
+        r('Meci 15','','','M17_1','','','Pierzătoare M7');r('Meci 16','','','M18_1','','','Pierzătoare M8');
+        r('Meci 17','','','M21_1','','','Pierzătoare M9');r('Meci 18','','','M21_2','','','Pierzătoare M10');
+        r('Finala L','','','MF_2','','','Pierzătoare M13');r('Marea Finală','','','');
+    }
+    function render(){
+        const h=(id,lbl)=>{const x=m[id];const act=(x.t1&&x.t2&&x.st!=='done');return `<div class="match"><b>${lbl}</b><div style="margin:4px 0"><span>${x.t1||`<i>${x.l1||'Așteaptă'}</i>`}</span>${act?`<input type="number" id="s1_${id}">`: `<b>${x.s1}</b>`}</div><div><span>${x.t2||`<i>${x.l2||'Așteaptă'}</i>`}</span>${act?`<input type="number" id="s2_${id}">`: `<b>${x.s2}</b>`}</div>${act?`<button style="width:100%;margin-top:6px;background:var(--accent);color:#fff;border:none;border-radius:4px;cursor:pointer" onclick="save('${id}')">Trimite</button>`:''}</div>`};
+        document.getElementById('w1').innerHTML='<h4>Turul 1</h4>'+h('Meci 1','Meci 1')+h('Meci 2','Meci 2')+h('Meci 3','Meci 3')+h('Meci 4','Meci 4');
+        document.getElementById('w2').innerHTML='<h4>Sferturi</h4>'+h('Meci 5','Meci 5')+h('Meci 6','Meci 6')+h('Meci 7','Meci 7')+h('Meci 8','Meci 8');
+        document.getElementById('w3').innerHTML='<h4>Semifinale</h4>'+h('Meci 13','Meci 13')+h('Meci 14','Meci 14');
+        document.getElementById('w4').innerHTML='<h4>Finală</h4>'+h('Finala W','Finala Winners');
+        document.getElementById('l1').innerHTML='<h4>Losers T1</h4>'+h('Meci 9','Meci 9')+h('Meci 10','Meci 10');
+        document.getElementById('l2').innerHTML='<h4>Losers T2</h4>'+h('Meci 11','Meci 11')+h('Meci 12','Meci 12');
+        document.getElementById('l3').innerHTML='<h4>Losers T3</h4>'+h('Meci 15','Meci 15')+h('Meci 16','Meci 16');
+        document.getElementById('l4').innerHTML='<h4>Losers T4</h4>'+h('Meci 17','Meci 17')+h('Meci 18','Meci 18');
+        document.getElementById('l5').innerHTML='<h4>Finală Losers</h4>'+h('Finala L','Finala Losers');
+        document.getElementById('gf').innerHTML=h('Marea Finală','Marea Finală');
+    }
+    function save(id){
+        const s1=parseInt(document.getElementById('s1_'+id).value),s2=parseInt(document.getElementById('s2_'+id).value);
+        if(isNaN(s1)||isNaN(s2)||s1===s2)return alert("Scor invalid!");
+        const x=m[id];x.s1=s1;x.s2=s2;x.st='done';const w=s1>s2?x.t1:x.t2,l=s1>s2?x.t2:x.t1;
+        if(x.n){const[nId,p]=x.n.split('_');if(p==='1')m[nId].t1=w;else m[nId].t2=w}
+        if(x.l){const[lId,p]=x.l.split('_');if(p==='1')m[lId].t1=l;else m[lId].t2=l}
+        render();
+    }
+    window.onload=()=>{const s=localStorage.getItem('cnu16_v3');if(s){JSON.parse(s).forEach((v,i)=>{if(document.getElementById('t'+(i+1)))document.getElementById('t'+(i+1)).value=v});start()}};
+</script></body></html>

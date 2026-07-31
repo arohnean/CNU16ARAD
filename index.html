@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>CN U16 ARAD 2026 FEMININ</title><style>:root{--bg:#0d1117;--panel:#161b22;--border:#30363d;--text:#e6edf3;--muted:#848d97;--accent:#238636}body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);text-align:center;margin:10px}.box{background:var(--panel);padding:15px;border-radius:12px;border:1px solid var(--border);margin:15px auto;max-width:1100px}.flex-layout{display:flex;gap:15px;justify-content:center;flex-wrap:wrap}.column{display:flex;flex-direction:column;gap:12px;min-width:220px;flex:1}.match{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:left;font-size:13px}input[type="text"]{background:var(--bg);color:var(--text);padding:6px;border:1px solid var(--border);border-radius:6px;width:90%}input[type="number"]{background:var(--panel);color:var(--text);border:1px solid var(--border);width:35px;text-align:center;font-weight:bold;float:right}.btn{background:var(--accent);color:#fff;padding:10px 20px;border:none;border-radius:6px;font-weight:bold;cursor:pointer;width:100%}</style></head><body>
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>CN U16 ARAD 2026 FEMININ</title><style>:root{--bg:#0d1117;--panel:#161b22;--border:#30363d;--text:#e6edf3;--muted:#848d97;--accent:#238636}body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);text-align:center;margin:10px}.box{background:var(--panel);padding:15px;border-radius:12px;border:1px solid var(--border);margin:20px auto;max-width:1000px}.vertical-stack{display:flex;flex-direction:column;gap:30px;width:100%}.flex-layout{display:flex;gap:15px;justify-content:center;flex-wrap:wrap}.column{display:flex;flex-direction:column;gap:12px;min-width:220px;flex:1}.match{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:left;font-size:13px}input[type="text"]{background:var(--bg);color:var(--text);padding:6px;border:1px solid var(--border);border-radius:6px;width:90%}input[type="number"]{background:var(--panel);color:var(--text);border:1px solid var(--border);width:35px;text-align:center;font-weight:bold;float:right}.btn{background:var(--accent);color:#fff;padding:10px 20px;border:none;border-radius:6px;font-weight:bold;cursor:pointer;width:100%}</style></head><body>
     <h1>CN U16 ARAD 2026 FEMININ</h1>
     <div id="setup" class="box" style="max-width:480px">
         <h3>Configurare Poziții Echipe (12 Echipe)</h3><p style="font-size:11px;color:var(--muted)">Primele 4 au BYE în primul tur.</p>
@@ -7,44 +7,46 @@
     <div id="app" style="display:none;padding:5px">
         <button class="btn" style="background:#30363d;width:auto;margin-bottom:15px" onclick="localStorage.clear();location.reload()">🔄 Modifică Echipele</button>
         
-        <div class="box">
-            <h2>🌿 RUTA CÂȘTIGĂTORILOR</h2>
-            <div class="flex-layout">
-                <div class="column" id="w1"><h4>Turul 1</h4></div>
-                <div class="column" id="w2"><h4>Sferturi</h4></div>
-                <div class="column" id="w3"><h4>Semifinale</h4></div>
-                <div class="column" id="w4"><h4>Finală Ruta W</h4></div>
+        <div class="vertical-stack">
+            <div class="box">
+                <h2>🌿 RUTA CÂȘTIGĂTORILOR</h2>
+                <div class="flex-layout">
+                    <div class="column" id="w1"><h4>Turul 1</h4></div>
+                    <div class="column" id="w2"><h4>Sferturi</h4></div>
+                    <div class="column" id="w3"><h4>Semifinale</h4></div>
+                    <div class="column" id="w4"><h4>Finală Ruta W</h4></div>
+                </div>
             </div>
-        </div>
 
-        <div class="box">
-            <h2>🍂 RUTA PIERZĂTORILOR</h2>
-            <div class="flex-layout">
-                <div class="column" id="l1"><h4>Faza 1</h4></div>
-                <div class="column" id="l2"><h4>Faza 2</h4></div>
-                <div class="column" id="l3"><h4>Faza 3</h4></div>
-                <div class="column" id="l4"><h4>Faza 4</h4></div>
-                <div class="column" id="l5"><h4>Finală Ruta L</h4></div>
+            <div class="box">
+                <h2>🍂 RUTA PIERZĂTORILOR</h2>
+                <div class="flex-layout">
+                    <div class="column" id="l1"><h4>Faza 1</h4></div>
+                    <div class="column" id="l2"><h4>Faza 2</h4></div>
+                    <div class="column" id="l3"><h4>Faza 3</h4></div>
+                    <div class="column" id="l4"><h4>Faza 4</h4></div>
+                    <div class="column" id="l5"><h4>Finală Ruta L</h4></div>
+                </div>
             </div>
         </div>
 
         <div class="box" style="max-width:280px"><h2>🏆 ETAPA FINALĂ</h2><div id="gf"></div></div>
     </div>
 <script>
-    if (!localStorage.getItem('cnu16_vert_v6')) { localStorage.clear(); localStorage.setItem('cnu16_vert_v6', 'true'); location.reload(); }
+    if (!localStorage.getItem('cnu16_fortat_vertical')) { localStorage.clear(); localStorage.setItem('cnu16_fortat_vertical', 'true'); location.reload(); }
     const de=["TISEANU / BUGI","BELEJAN / CHERECHES","CARSTEA / VASILESCU","PRESECAN / SABAU","IUGA / PRIPON","ROMAN / CHINDRIS","BLAJ CIOCOIU / SZATMARY","SERTEA / BRENCIU","CRISAN / MORUZ","BALTA / MOTICA","POP / CIMPAN","ILCA / ROSTAS"];
     const container=document.getElementById('inputs');de.forEach((v,i)=>container.innerHTML+=`<input type="text" id="t${i+1}" value="${v}">`);
     let e=[],m={};
     function start(){
         e=[];for(let i=1;i<=12;i++)e.push(document.getElementById('t'+i).value);
-        localStorage.setItem('cnu16_stoc_v6',JSON.stringify(e));
+        localStorage.setItem('cnu16_stoc_vertical',JSON.stringify(e));
         document.getElementById('setup').style.display='none';document.getElementById('app').style.display='block';
         init();render();
     }
     function init(){
         const r=(id,t1,t2,n,l,l1,l2)=>m[id]={t1,t2,s1:'',s2:'',n,l,l1,l2,st:''};
-        r('Meci 1',e[4],e[11],'Meci 5_t1','Meci 9_t1');r('Meci 2',e[7],e[8],'Meci 6_t1','Meci 9_t2');r('Meci 3',e[5],e[10],'Meci 7_t1','Meci 10_t1');r('Meci 4',e[6],e[9],'Meci 8_t1','Meci 10_t2');
-        r('Meci 5','',e[0],'Meci 13_t1','Meci 11_t2','Câștigătoare M1');r('Meci 6','',e[3],'Meci 13_t2','Meci 12_t2','Câștigătoare M2');r('Meci 7','',e[1],'Meci 14_t1','Meci 15_t2','Câștigătoare M3');r('Meci 8','',e[2],'Meci 14_t2','Meci 16_t2','Câștigătoare M4');
+        r('Meci 1',e,e,'Meci 5_t1','Meci 9_t1');r('Meci 2',e,e,'Meci 6_t1','Meci 9_t2');r('Meci 3',e,e,'Meci 7_t1','Meci 10_t1');r('Meci 4',e,e,'Meci 8_t1','Meci 10_t2');
+        r('Meci 5','',e,'Meci 13_t1','Meci 11_t2','Câștigătoare M1');r('Meci 6','',e,'Meci 13_t2','Meci 12_t2','Câștigătoare M2');r('Meci 7','',e,'Meci 14_t1','Meci 15_t2','Câștigătoare M3');r('Meci 8','',e,'Meci 14_t2','Meci 16_t2','Câștigătoare M4');
         r('Meci 13','','','Finala W_t1','Meci 17_t2','Câștigătoare M5','Câștigătoare M6');r('Meci 14','','','Finala W_t2','Meci 18_t2','Câștigătoare M7','Câștigătoare M8');r('Finala W','','','Marea Finală_t1','Finala L_t2','Câștigătoare M13','Câștigătoare M14');
         r('Meci 9','','','Meci 11_t1','','Pierzătoare M1','Pierzătoare M2');r('Meci 10','','','Meci 12_t1','','Pierzătoare M3','Pierzătoare M4');
         r('Meci 11','','','Meci 15_t1','','Câștigătoare M9','Pierzătoare M5');r('Meci 12','','','Meci 16_t1','','Câștigătoare M10','Pierzătoare M6');
@@ -73,5 +75,5 @@
         if(x.l){const[lId,p]=x.l.split('_');if(p==='t1')m[lId].t1=l;else m[lId].t2=l}
         render();
     }
-    window.onload=()=>{let s=localStorage.getItem('cnu16_stoc_v6');if(s){JSON.parse(s).forEach((v,i)=>{if(document.getElementById('t'+(i+1)))document.getElementById('t'+(i+1)).value=v});start()}};
+    window.onload=()=>{let s=localStorage.getItem('cnu16_stoc_vertical');if(s){JSON.parse(s).forEach((v,i)=>{if(document.getElementById('t'+(i+1)))document.getElementById('t'+(i+1)).value=v});start()}};
 </script></body></html>

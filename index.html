@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tablou 12 Echipe</title>
+    <title>CN U16 ARAD 2026 FEMININ</title>
     <style>
         :root { --bg: #0d1117; --panel: #161b22; --border: #30363d; --text: #e6edf3; --muted: #848d97; --accent: #238636; }
         body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 10px; text-align: center; }
@@ -12,7 +12,7 @@
         .team-inputs input { background: var(--bg); color: var(--text); padding: 8px; border: 1px solid var(--border); border-radius: 6px; }
         .btn { width: 100%; padding: 12px; background: var(--accent); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
         .bracket-container { display: flex; flex-direction: column; gap: 20px; padding: 10px; overflow-x: auto; }
-        .bracket-title { background: #21262d; padding: 10px; border-radius: 6px; font-size: 14px; font-weight: bold; border: 1px solid var(--border); margin-top: 15px; }
+        .bracket-title { background: #21262d; padding: 10px; border-radius: 6px; font-size: 14px; font-weight: bold; border: 1px solid var(--border); margin-top: 15px; text-transform: uppercase; }
         .bracket-section { display: flex; gap: 20px; background: var(--panel); padding: 15px; border-radius: 12px; border: 1px solid var(--border); min-width: max-content; }
         .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 220px; }
         .round-title { font-size: 12px; color: var(--muted); margin-bottom: 5px; border-bottom: 1px solid var(--border); padding-bottom: 4px; font-weight: bold; }
@@ -23,11 +23,12 @@
         .slot:last-of-type { border-bottom: none; }
         .slot span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
         .slot input { background: var(--panel); border: 1px solid var(--border); color: var(--text); width: 40px; text-align: center; border-radius: 4px; font-weight: bold; }
-        .matchup button { width: 100%; padding: 5px; font-size: 11px; margin-top: 6px; background: #21262d; color: var(--text); border: 1px solid var(--border); border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .matchup .btn-trimite { width: 100%; padding: 6px; font-size: 12px; margin-top: 8px; background: var(--accent); color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .matchup .btn-trimite:hover { background: #2ea043; }
     </style>
 </head>
 <body>
-    <h1>Management Turneu</h1>
+    <h1>CN U16 ARAD 2026 FEMININ</h1>
     <div class="setup-section" id="setup">
         <h3>Configurare Echipe (12 Echipe)</h3>
         <p style="font-size:12px;color:var(--muted);margin-bottom:15px">Primele 4 au BYE în primul tur.</p>
@@ -39,31 +40,30 @@
             <input type="text" id="t9" value="Echipa 9"><input type="text" id="t10" value="Echipa 10">
             <input type="text" id="t11" value="Echipa 11"><input type="text" id="t12" value="Echipa 12">
         </div>
-        <button class="btn" onclick="genereazaTurneu()">Creează Tablou Întunecat</button>
+        <button class="btn" onclick="genereazaTurneu()">Creează și Salvează Tabloul</button>
     </div>
     <div class="bracket-container" id="bracket" style="display: none;">
-        <div class="bracket-title">🌿 WINNERS BRACKET</div>
+        <button class="btn" style="background:#30363d; max-width: 200px; margin-bottom: 10px;" onclick="reseteazaTot()">🔄 Modifică Echipele</button>
+        <div class="bracket-title">🌿 RUTA CÂȘTIGĂTORILOR</div>
         <div class="bracket-section">
             <div class="round"><div class="round-title">Turul 1</div><div id="w-r1"></div></div>
             <div class="round"><div class="round-title">Sferturi</div><div id="w-r2"></div></div>
             <div class="round"><div class="round-title">Semifinale</div><div id="w-r3"></div></div>
-            <div class="round"><div class="round-title">Finala Winners</div><div id="w-r4"></div></div>
+            <div class="round"><div class="round-title">Finală</div><div id="w-r4"></div></div>
         </div>
-        <div class="bracket-title">🍂 LOSERS BRACKET</div>
+        <div class="bracket-title">🍂 RUTA PIERZĂTORILOR</div>
         <div class="bracket-section">
             <div class="round"><div class="round-title">Losers T1</div><div id="l-r1"></div></div>
             <div class="round"><div class="round-title">Losers T2</div><div id="l-r2"></div></div>
             <div class="round"><div class="round-title">Losers T3</div><div id="l-r3"></div></div>
             <div class="round"><div class="round-title">Losers T4</div><div id="l-r4"></div></div>
-            <div class="round"><div class="round-title">Finala Losers</div><div id="l-r5"></div></div>
+            <div class="round"><div class="round-title">Finală Losers</div><div id="l-r5"></div></div>
         </div>
         <div class="bracket-title">🏆 ETAPA FINALĂ</div>
         <div class="bracket-section" style="justify-content: center;">
             <div class="round"><div class="round-title">Marea Finală</div><div id="grand-final"></div></div>
         </div>
     </div>
-
-    <!-- Linia salvatoare: Toată logica grea se încarcă direct dintr-un CDN securizat extern -->
-    <script src="https://jsdelivr.net" onerror="this.src='https://pastebin.com'"></script>
+    <script src="https://jsdelivr.net"></script>
 </body>
 </html>

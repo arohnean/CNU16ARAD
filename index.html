@@ -13,28 +13,37 @@
         <div class="box" style="max-width:300px"><h2>🏆 ETAPA FINALĂ</h2><div id="gf"></div></div>
     </div>
 <script>
+    // CURĂȚARE FORȚATĂ INSTANTANEE A VECHILOR ERORI DIN CACHE LA PRIMA ÎNCĂRCARE
+    if (!localStorage.getItem('cnu16_curat_v5')) { localStorage.clear(); localStorage.setItem('cnu16_curat_v5', 'true'); location.reload(); }
+
     const de=["TISEANU / BUGI","BELEJAN / CHERECHES","CARSTEA / VASILESCU","PRESECAN / SABAU","IUGA / PRIPON","ROMAN / CHINDRIS","BLAJ CIOCOIU / SZATMARY","SERTEA / BRENCIU","CRISAN / MORUZ","BALTA / MOTICA","POP / CIMPAN","ILCA / ROSTAS"];
     const container=document.getElementById('inputs');de.forEach((v,i)=>container.innerHTML+=`<input type="text" id="t${i+1}" value="${v}">`);
     let e=[],m={};
+
     function start(){
         e=[];for(let i=1;i<=12;i++)e.push(document.getElementById('t'+i).value);
-        localStorage.setItem('cnu16_v4',JSON.stringify(e));
+        localStorage.setItem('cnu16_stocare_v5',JSON.stringify(e));
         document.getElementById('setup').style.display='none';document.getElementById('app').style.display='block';
         init();render();
     }
+
     function init(){
         const r=(id,t1,t2,n,l,l1,l2)=>m[id]={t1,t2,s1:'',s2:'',n,l,l1,l2,st:''};
+        // Mapare sportivă fixă pe echipe individuale pentru a bloca complet listele lungi
         r('Meci 1',e[4],e[11],'Meci 5_t1','Meci 9_t1');
         r('Meci 2',e[7],e[8],'Meci 6_t1','Meci 9_t2');
         r('Meci 3',e[5],e[10],'Meci 7_t1','Meci 10_t1');
         r('Meci 4',e[6],e[9],'Meci 8_t1','Meci 10_t2');
+        
         r('Meci 5','',e[0],'Meci 13_t1','Meci 11_t2','Câștigătoare M1');
         r('Meci 6','',e[3],'Meci 13_t2','Meci 12_t2','Câștigătoare M2');
         r('Meci 7','',e[1],'Meci 14_t1','Meci 15_t2','Câștigătoare M3');
         r('Meci 8','',e[2],'Meci 14_t2','Meci 16_t2','Câștigătoare M4');
+        
         r('Meci 13','','','Finala W_t1','Meci 17_t2','Câștigătoare M5','Câștigătoare M6');
         r('Meci 14','','','Finala W_t2','Meci 18_t2','Câștigătoare M7','Câștigătoare M8');
         r('Finala W','','','Marea Finală_t1','Finala L_t2','Câștigătoare M13','Câștigătoare M14');
+        
         r('Meci 9','','','Meci 11_t1','','Pierzătoare M1','Pierzătoare M2');
         r('Meci 10','','','Meci 12_t1','','Pierzătoare M3','Pierzătoare M4');
         r('Meci 11','','','Meci 15_t1','','Câștigătoare M9','Pierzătoare M5');
@@ -42,10 +51,11 @@
         r('Meci 15','','','Meci 17_t1','','Câștigătoare M11','Pierzătoare M7');
         r('Meci 16','','','Meci 18_t1','','Câștigătoare M12','Pierzătoare M8');
         r('Meci 17','','','Finala L_t1','','Câștigătoare M15','Pierzătoare M9');
-        r('Meci 18','','','Finala L_t2_alt','','Câștigătoare M16','Pierzătoare M10');
+        r('Meci 18','','','Finala L_t2','','Câștigătoare M16','Pierzătoare M10');
         r('Finala L','','','Marea Finală_t2','','Câștigătoare M17','Pierzătoare M13');
         r('Marea Finală','','','','','Câștigătoare Winners','Câștigătoare Losers');
     }
+
     function render(){
         const h=(id,lbl)=>{const x=m[id];const act=(x.t1&&x.t2&&x.st!=='done');return `<div class="match"><b>${lbl}</b><div style="margin:4px 0"><span>${x.t1||`<i>${x.l1||'Așteaptă'}</i>`}</span>${act?`<input type="number" id="s1_${id}">`: `<b>${x.s1}</b>`}</div><div><span>${x.t2||`<i>${x.l2||'Așteaptă'}</i>`}</span>${act?`<input type="number" id="s2_${id}">`: `<b>${x.s2}</b>`}</div>${act?`<button style="width:100%;margin-top:6px;background:var(--accent);color:#fff;border:none;border-radius:4px;cursor:pointer" onclick="save('${id}')">Trimite</button>`:''}</div>`};
         document.getElementById('w1').innerHTML='<h4>Turul 1</h4>'+h('Meci 1','Meci 1')+h('Meci 2','Meci 2')+h('Meci 3','Meci 3')+h('Meci 4','Meci 4');
@@ -59,14 +69,18 @@
         document.getElementById('l5').innerHTML='<h4>Finală Losers</h4>'+h('Finala L','Finala Losers');
         document.getElementById('gf').innerHTML=h('Marea Finală','Marea Finală');
     }
+
     function save(id){
         const s1=parseInt(document.getElementById('s1_'+id).value),s2=parseInt(document.getElementById('s2_'+id).value);
         if(isNaN(s1)||isNaN(s2)||s1===s2)return alert("Scor invalid!");
         const x=m[id];x.s1=s1;x.s2=s2;x.st='done';const w=s1>s2?x.t1:x.t2,l=s1>s2?x.t2:x.t1;
         if(x.n){const[nId,p]=x.n.split('_');if(p==='t1')m[nId].t1=w;else m[nId].t2=w}
-        if(x.l){const[lId,p]=x.l.split('_');if(lId==='Meci 18')m[lId].t2=l;else if(p==='t1')m[lId].t1=l;else m[lId].t2=l}
+        if(x.l){const[lId,p]=x.l.split('_');if(p==='t1')m[lId].t1=l;else m[lId].t2=l}
         render();
     }
-    window.onload=()=>{const s=localStorage.getItem('cnu16_v4');if(s){JSON.parse(s).forEach((v,i)=>{if(document.getElementById('t'+(i+1)))document.getElementById('t'+(i+1)).value=v});start()}};
-</script></body></html>
 
+    window.onload=()=>{
+        let s=localStorage.getItem('cnu16_stocare_v5');
+        if(s){JSON.parse(s).forEach((v,i)=>{if(document.getElementById('t'+(i+1)))document.getElementById('t'+(i+1)).value=v});start()}
+    }
+</script></body></html>

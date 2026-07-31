@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablou Grafic Dublă Eliminare - GitHub Style</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;        /* Fundalul principal GitHub */
+            --panel-bg: #161b22;        /* Fundalul cardurilor/containerelor */
+            --border-color: #30363d;    /* Culoarea liniilor și marginilor */
+            --text-main: #e6edf3;       /* Textul alb/gri deschis */
+            --text-muted: #848d97;      /* Textul secundar gri */
+            --primary-accent: #238636;  /* Verdele oficial pentru butoane/acțiuni */
+            --primary-hover: #2ea043;   /* Verde aprins la trecerea mouse-ului */
+            --active-bg: #1f242c;       /* Highlight meci activ */
+        }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; 
+            background-color: var(--bg-color); 
+            margin: 10px; 
+            color: var(--text-main);
+        }
+        h1, h2, h3 { text-align: center; margin-bottom: 5px; color: var(--text-main); }
+        h1 { font-size: 24px; font-weight: 600; }
+        h2 { font-size: 18px; color: var(--text-muted); font-weight: 400; }
+        
+        .setup-section { background: var(--panel-bg); padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); max-width: 550px; margin: 10px auto 30px; border: 1px solid var(--border-color); }
+        .team-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .team-inputs input { background: var(--bg-color); color: var(--text-main); padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 14px; outline: none; }
+        .team-inputs input:focus { border-color: #58a6ff; }
+        
+        .btn-generate { display: block; width: 100%; padding: 12px; background: var(--primary-accent); color: white; border: 1px solid rgba(240,246,252,0.1); border-radius: 6px; font-weight: 600; font-size: 15px; cursor: pointer; transition: background 0.2s; }
+        .btn-generate:hover { background: var(--primary-hover); }
+        
+        /* Structura Grafică a Tabloului */
+        .bracket-container { display: flex; flex-direction: column; gap: 40px; padding: 10px; overflow-x: auto; }
+        .bracket-title { background: #21262d; color: var(--text-main); padding: 12px; border-radius: 6px; font-size: 14px; font-weight: 600; text-transform: uppercase; margin-top: 20px; border: 1px solid var(--border-color); }
+        .bracket-section { display: flex; gap: 30px; background: var(--panel-bg); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); min-width: max-content; }
+        
+        .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 240px; position: relative; }
+        .round-title { font-size: 13px; text-align: center; font-weight: 600; color: var(--text-muted); margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
+        
+        /* Casetă Meci și Linii Conectare în stil GitHub */
+        .matchup { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; margin: 15px 0; position: relative; transition: all 0.3s; }
+        .matchup.active { border-color: #58a6ff; background: var(--active-bg); box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.15); }
+        .match-title { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .slot { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 14px; border-bottom: 1px solid #21262d; }
+        .slot:last-of-type { border-bottom: none; }
+        .slot span { font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+        .slot i { color: var(--text-muted); }
+        .slot input { background: var(--panel-bg); border: 1px solid var(--border-color); color: var(--text-main); width: 45px; text-align: center; padding: 4px; border-radius: 4px; font-weight: 600; }
+        
+        .matchup button { width: 100%; padding: 6px; font-size: 12px; margin-top: 10px; background: #21262d; color: #c9d1d9; border: 1px solid var(--border-color); border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .matchup button:hover { background: #30363d; color: var(--text-main); border-color: #848d97; }
+
+        /* Conectori Vizuali */
+        .round:not(:last-child) .matchup::after { content: ""; position: absolute; right: -30px; top: 50%; width: 30px; border-bottom: 2px solid var(--border-color); z-index: 1; }
+        .round:not(:first-child) .matchup::before { content: ""; position: absolute; left: -30px; top: 50%; width: 30px; border-bottom: 2px solid var(--border-color); z-index: 1; }
+    </style>
+</head>
+<body>
+
+    <h1>Management Turneu</h1>
+    <h2>Sistem Grafic cu Dublă Eliminare (12 Echipe)</h2>
+
+    <!-- Ecran Inițial Configurare -->
+    <div class="setup-section" id="setup">
+        <h3 style="margin-top:0;">Configurare Echipe</h3>
+        <p style="font-size: 13px; color: var(--text-muted); text-align: center; margin-bottom: 20px;">Primele 4 poziții sunt alocate capilor de serie principali (calificați direct în Sferturi).</p>
+        <div class="team-inputs" id="inputs-container"></div>
+        <button class="btn-generate" onclick="genereazaTurneu()">Creează Tablou Întunecat</button>
+    </div>
+
+    <!-- Container Grafic Principal -->
+    <div class="bracket-container" id="bracket" style="display: none;">
+        
+        <div class="bracket-title">🌿 WINNERS BRACKET</div>
+        <div class="bracket-section">
+            <div class="round"><div class="round-title">Turul 1</div><div id="w-r1"></div></div>
+            <div class="round"><div class="round-title">Sferturi</div><div id="w-r2"></div></div>
+            <div class="round"><div class="round-title">Semifinale</div><div id="w-r3"></div></div>
+            <div class="round"><div class="round-title">Finala Winners</div><div id="w-r4"></div></div>
+        </div>
+
+        <div class="bracket-title">🍂 LOSERS BRACKET</div>
+        <div class="bracket-section">
+            <div class="round"><div class="round-title">Losers T1</div><div id="l-r1"></div></div>
+            <div class="round"><div class="round-title">Losers T2</div><div id="l-r2"></div></div>
+            <div class="round"><div class="round-title">Losers T3</div><div id="l-r3"></div></div>
+            <div class="round"><div class="round-title">Losers T4</div><div id="l-r4"></div></div>
+            <div class="round"><div class="round-title">Finala Losers</div><div id="l-r5"></div></div>
+        </div>
+
+        <div class="bracket-title">🏆 ETAPA FINALĂ</div>
+        <div class="bracket-section" style="justify-content: center;">
+            <div class="round"><div class="round-title">Marea Finală</div><div id="grand-final"></div></div>
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('inputs-container');
+        for (let i = 1; i <= 12; i++) {
+            container.innerHTML += `<input type="text" id="t${i}" value="Echipa ${i}" placeholder="Echipa ${i}">`;
+        }
+
+        let echipe = [];
+        let meciuri = {};
+
+        function genereazaTurneu() {
+            echipe = [];
+            for (let i = 1; i <= 12; i++) {
+                echipe.push(document.getElementById(`t${i}`).value || `Echipa ${i}`);
+            }
+            
+            meciuri = {
+                'W1': { t1: echipe[4], t2: echipe[11], s1: null, s2: null, urmatorul: 'W5_t1', pierzator: 'L1_t1', status: 'ready' }, 
+                'W2': { t1: echipe[7], t2: echipe[8], s1: null, s2: null, urmatorul: 'W6_t1', pierzator: 'L1_t2', status: 'ready' },  
+                'W3': { t1: echipe[5], t2: echipe[10], s1: null, s2: null, urmatorul: 'W7_t1', pierzator: 'L2_t1', status: 'ready' }, 
+                'W4': { t1: echipe[6], t2: echipe[9], s1: null, s2: null, urmatorul: 'W8_t1', pierzator: 'L2_t2', status: 'ready' },  
+                
+                'W5': { t1: '', t2: echipe[0], s1: null, s2: null, urmatorul: 'W9_t1', pierzator: 'L3_t2', status: 'wait' }, 
+                'W6': { t1: '', t2: echipe[3], s1: null, s2: null, urmatorul: 'W9_t2', pierzator: 'L4_t2', status: 'wait' }, 
+                'W7': { t1: '', t2: echipe[1], s1: null, s2: null, urmatorul: 'W10_t1', pierzator: 'L5_t2', status: 'wait' },
+                'W8': { t1: '', t2: echipe[2], s1: null, s2: null, urmatorul: 'W10_t2', pierzator: 'L6_t2', status: 'wait' },
+
+                'W9': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'W11_t1', pierzator: 'L7_t2', status: 'wait' },
+                'W10': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'W11_t2', pierzator: 'L8_t2', status: 'wait' },
+                'W11': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'F1_t1', pierzator: 'L9_t2', status: 'wait' },
+
+                'L1': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L3_t1', status: 'wait' },
+                'L2': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L4_t1', status: 'wait' },
+                'L3': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L5_t1', status: 'wait' },
+                'L4': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L6_t1', status: 'wait' },
+                'L5': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L7_t1', status: 'wait' },
+                'L6': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L8_t1', status: 'wait' },
+                'L7': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L9_t1', status: 'wait' },
+                'L8': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L9_t2', status: 'wait' },
+                'L9': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'F1_t2', status: 'wait' },
+

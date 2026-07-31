@@ -1,8 +1,7 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><title>CN U16 ARAD 2026 FEMININ</title><style>:root{--bg:#0d1117;--panel:#161b22;--border:#30363d;--text:#e6edf3;--muted:#848d97;--accent:#238636}body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);text-align:center;margin:10px}.box{background:var(--panel);padding:15px;border-radius:12px;border:1px solid var(--border);margin:20px auto;max-width:1000px}.vertical-stack{display:flex;flex-direction:column;gap:30px;width:100%}.flex-layout{display:flex;gap:15px;justify-content:center;flex-wrap:wrap}.column{display:flex;flex-direction:column;gap:12px;min-width:220px;flex:1}.match{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:left;font-size:13px}input[type="text"]{background:var(--bg);color:var(--text);padding:6px;border:1px solid var(--border);border-radius:6px;width:90%}input[type="number"]{background:var(--panel);color:var(--text);border:1px solid var(--border);width:35px;text-align:center;font-weight:bold;float:right}.btn{background:var(--accent);color:#fff;padding:10px 20px;border:none;border-radius:6px;font-weight:bold;cursor:pointer;width:100%}.admin-only{display:none!important}</style></head><body>
     <h1>CN U16 ARAD 2026 FEMININ</h1>
     
-    <!-- Buton clar de securitate plasat la vedere -->
-    <button id="auth-btn" class="btn" style="background:#21262d; border:1px solid var(--border); max-width:200px; margin-bottom:10px" onclick="cereParola()">🔒 Autentificare Admin</button>
+    <button id="auth-btn" class="btn" style="background:#21262d; border:1px solid var(--border); max-width:230px; margin-bottom:10px" onclick="cereParola()">🔒 Autentificare Admin</button>
     <button class="btn admin-only" id="btn-modifica" style="background:#30363d;width:auto;margin-bottom:15px;margin-left:10px" onclick="localStorage.clear();location.reload()">🔄 Modifică Echipele</button>
 
     <div id="setup" class="box" style="max-width:480px;display:none">
@@ -34,13 +33,13 @@
         <div class="box" style="max-width:280px"><h2>🏆 ETAPA FINALĂ</h2><div id="gf"></div></div>
     </div>
 <script>
-    // CURĂȚARE TOTALĂ ȘI FORȚATĂ A CACHE-ULUI DE TEST LA PRIMA RULARE V9
-    if(!localStorage.getItem('cnu16_securizat_v9')){localStorage.clear();localStorage.setItem('cnu16_securizat_v9','true');location.reload()}
+    // METODĂ AGRESIVĂ DE ȘTERGERE A CACHE-ULUI V10 PENTRU DEBLOCAREA BUTONULUI
+    if(!localStorage.getItem('cnu16_securitate_v10')){localStorage.clear();localStorage.setItem('cnu16_securitate_v10','true');location.reload()}
 
     const PAROLA_CORECTA = "brizo2026";
     let esteAdmin = false;
 
-    if (sessionStorage.getItem("admin_activat") === "true") { esteAdmin = true; }
+    if (sessionStorage.getItem("admin_activat_v10") === "true") { esteAdmin = true; }
 
     const de=["TISEANU / BUGI","BELEJAN / CHERECHES","CARSTEA / VASILESCU","PRESECAN / SABAU","IUGA / PRIPON","ROMAN / CHINDRIS","BLAJ CIOCOIU / SZATMARY","SERTEA / BRENCIU","CRISAN / MORUZ","BALTA / MOTICA","POP / CIMPAN","ILCA / ROSTAS"];
     const container=document.getElementById('inputs');de.forEach((v,i)=>container.innerHTML+=`<input type="text" id="t${i+1}" value="${v}">`);
@@ -49,7 +48,7 @@
     function init(){
         const r=(id,t1,t2,n,l,l1,l2)=>m[id]={t1,t2,s1:'',s2:'',n,l,l1,l2,st:''};
         r('Meci 1',de,de,'Meci 5_t1','Meci 9_t1');r('Meci 2',de,de,'Meci 6_t1','Meci 9_t2');r('Meci 3',de,de,'Meci 7_t1','Meci 10_t1');r('Meci 4',de,de,'Meci 8_t1','Meci 10_t2');
-        r('Meci 5','',de,'Meci 13_t1','Meci 11_t2','Câștigătoare M1');r('Meci 6','',de,'Meci 13_t2','Meci 12_t2','Câștigătoare M2');r('Meci 7','',de,'Meci 14_t1','Meci 15_t2','Câștigătoare M3');r('Meci 8','',e,'Meci 14_t2','Meci 16_t2','Câștigătoare M4');
+        r('Meci 5','',de,'Meci 13_t1','Meci 11_t2','Câștigătoare M1');r('Meci 6','',de,'Meci 13_t2','Meci 12_t2','Câștigătoare M2');r('Meci 7','',de,'Meci 14_t1','Meci 15_t2','Câștigătoare M3');r('Meci 8','',de,'Meci 14_t2','Meci 16_t2','Câștigătoare M4');
         r('Meci 13','','','Finala W_t1','Meci 17_t2','Câștigătoare M5','Câștigătoare M6');r('Meci 14','','','Finala W_t2','Meci 18_t2','Câștigătoare M7','Câștigătoare M8');r('Finala W','','','Marea Finală_t1','Finala L_t2','Câștigătoare M13','Câștigătoare M14');
         r('Meci 9','','','Meci 11_t1','','Pierzătoare M1','Pierzătoare M2');r('Meci 10','','','Meci 12_t1','','Pierzătoare M3','Pierzătoare M4');
         r('Meci 11','','','Meci 15_t1','','Câștigătoare M9','Pierzătoare M5');r('Meci 12','','','Meci 16_t1','','Câștigătoare M10','Pierzătoare M6');
@@ -60,7 +59,6 @@
 
     function render(){
         const h=(id,lbl)=>{const x=m[id];const act=(x.t1&&x.t2&&x.st!=='done');
-        // Adăugat atributul "disabled" dacă utilizatorul nu este autentificat ca admin
         return `<div class="match"><b>${lbl}</b><div style="margin:4px 0"><span>${x.t1||`<i>${x.l1||'Așteaptă'}</i>`}</span>${act?`<input type="number" id="s1_${id}" ${esteAdmin?'':'disabled'} value="${x.s1}">`: `<b>${x.s1}</b>`}</div><div><span>${x.t2||`<i>${x.l2||'Așteaptă'}</i>`}</span>${act?`<input type="number" id="s2_${id}" ${esteAdmin?'':'disabled'} value="${x.s2}">`: `<b>${x.s2}</b>`}</div>${act&&esteAdmin?`<button class="btn" style="padding:4px;margin-top:6px;font-size:12px;" onclick="save('${id}')">Trimite Scor</button>`:''}</div>`};
         
         document.getElementById('w1').innerHTML='<h4>Turul 1</h4>'+h('Meci 1','Meci 1')+h('Meci 2','Meci 2')+h('Meci 3','Meci 3')+h('Meci 4','Meci 4');
@@ -75,7 +73,7 @@
         document.getElementById('gf').innerHTML=h('Marea Finală','Marea Finală');
         
         document.querySelectorAll('.admin-only').forEach(el => el.style.setProperty('display', esteAdmin ? 'inline-block' : 'none', 'important'));
-        const ab = document.getElementById("auth-btn"); if(ab) ab.textContent = esteAdmin ? "🔓 Admin Deblocat" : "🔒 Autentificare Admin";
+        const ab = document.getElementById("auth-btn"); if(ab) ab.textContent = esteAdmin ? "🔓 Admin Activ (Click pt. Blocare)" : "🔒 Autentificare Admin";
     }
 
     function save(id){
@@ -84,16 +82,16 @@
         const x=m[id];x.s1=s1;x.s2=s2;x.st='done';const w=s1>s2?x.t1:x.t2,l=s1>s2?x.t2:x.t1;
         if(x.n){const[nId,p]=x.n.split('_');if(p==='t1')m[nId].t1=w;else m[nId].t2=w}
         if(x.l){const[lId,p]=x.l.split('_');if(p==='t1')m[lId].t1=l;else m[lId].t2=l}
-        localStorage.setItem('cnu16_meciuri_v9', JSON.stringify(m));
+        localStorage.setItem('cnu16_meciuri_v10', JSON.stringify(m));
         render();
     }
 
     function cereParola() {
-        if(esteAdmin) { esteAdmin = false; sessionStorage.removeItem("admin_activat"); location.reload(); return; }
+        if(esteAdmin) { esteAdmin = false; sessionStorage.removeItem("admin_activat_v10"); location.reload(); return; }
         const p = prompt("Introduceți parola de administrator pentru a debloca modificările:");
         if (p === PAROLA_CORECTA) {
             esteAdmin = true;
-            sessionStorage.setItem("admin_activat", "true");
+            sessionStorage.setItem("admin_activat_v10", "true");
             render();
         } else if (p !== null) { alert("Parolă incorectă!"); }
     }
@@ -101,12 +99,12 @@
     function start(){
         let customEchipe = [];
         for (let i = 1; i <= 12; i++) customEchipe.push(document.getElementById('t'+i).value);
-        localStorage.setItem('ar_cnu16_v9', JSON.stringify(customEchipe));
+        localStorage.setItem('ar_cnu16_v10', JSON.stringify(customEchipe));
         location.reload();
     }
 
-    let salvatEchipe = localStorage.getItem('ar_cnu16_v9');
-    let salvatMeciuri = localStorage.getItem('cnu16_meciuri_v9');
+    let salvatEchipe = localStorage.getItem('ar_cnu16_v10');
+    let salvatMeciuri = localStorage.getItem('cnu16_meciuri_v10');
     if(salvatEchipe){ JSON.parse(salvatEchipe).forEach((v,i)=> de[i] = v); }
     init();
     if(salvatMeciuri){ m = JSON.parse(salvatMeciuri); }

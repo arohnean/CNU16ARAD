@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -100,10 +101,14 @@
     </div>
 
     <script>
-        const container = document.getElementById('inputs-container');
-        for (let i = 1; i <= 12; i++) {
-            container.innerHTML += `<input type="text" id="t${i}" value="Echipa ${i}" placeholder="Echipa ${i}">`;
-        }
+        // Forțăm browserul să genereze inputurile abia după ce a citit tot HTML-ul
+        window.onload = function() {
+            const container = document.getElementById('inputs-container');
+            container.innerHTML = ''; // Curățăm spațiul
+            for (let i = 1; i <= 12; i++) {
+                container.innerHTML += `<input type="text" id="t${i}" value="Echipa ${i}" placeholder="Echipa ${i}">`;
+            }
+        };
 
         let echipe = [];
         let meciuri = {};
@@ -111,19 +116,20 @@
         function genereazaTurneu() {
             echipe = [];
             for (let i = 1; i <= 12; i++) {
-                echipe.push(document.getElementById(`t${i}`).value || `Echipa ${i}`);
+                const inputEl = document.getElementById(`t${i}`);
+                echipe.push(inputEl ? inputEl.value : `Echipa ${i}`);
             }
             
             meciuri = {
-                'W1': { t1: echipe[4], t2: echipe[11], s1: null, s2: null, urmatorul: 'W5_t1', pierzator: 'L1_t1', status: 'ready' }, 
-                'W2': { t1: echipe[7], t2: echipe[8], s1: null, s2: null, urmatorul: 'W6_t1', pierzator: 'L1_t2', status: 'ready' },  
-                'W3': { t1: echipe[5], t2: echipe[10], s1: null, s2: null, urmatorul: 'W7_t1', pierzator: 'L2_t1', status: 'ready' }, 
-                'W4': { t1: echipe[6], t2: echipe[9], s1: null, s2: null, urmatorul: 'W8_t1', pierzator: 'L2_t2', status: 'ready' },  
+                'W1': { t1: echipe, t2: echipe, s1: null, s2: null, urmatorul: 'W5_t1', pierzator: 'L1_t1', status: 'ready' }, 
+                'W2': { t1: echipe, t2: echipe, s1: null, s2: null, urmatorul: 'W6_t1', pierzator: 'L1_t2', status: 'ready' },  
+                'W3': { t1: echipe, t2: echipe, s1: null, s2: null, urmatorul: 'W7_t1', pierzator: 'L2_t1', status: 'ready' }, 
+                'W4': { t1: echipe, t2: echipe, s1: null, s2: null, urmatorul: 'W8_t1', pierzator: 'L2_t2', status: 'ready' },  
                 
-                'W5': { t1: '', t2: echipe[0], s1: null, s2: null, urmatorul: 'W9_t1', pierzator: 'L3_t2', status: 'wait' }, 
-                'W6': { t1: '', t2: echipe[3], s1: null, s2: null, urmatorul: 'W9_t2', pierzator: 'L4_t2', status: 'wait' }, 
-                'W7': { t1: '', t2: echipe[1], s1: null, s2: null, urmatorul: 'W10_t1', pierzator: 'L5_t2', status: 'wait' },
-                'W8': { t1: '', t2: echipe[2], s1: null, s2: null, urmatorul: 'W10_t2', pierzator: 'L6_t2', status: 'wait' },
+                'W5': { t1: '', t2: echipe, s1: null, s2: null, urmatorul: 'W9_t1', pierzator: 'L3_t2', status: 'wait' }, 
+                'W6': { t1: '', t2: echipe, s1: null, s2: null, urmatorul: 'W9_t2', pierzator: 'L4_t2', status: 'wait' }, 
+                'W7': { t1: '', t2: echipe, s1: null, s2: null, urmatorul: 'W10_t1', pierzator: 'L5_t2', status: 'wait' },
+                'W8': { t1: '', t2: echipe, s1: null, s2: null, urmatorul: 'W10_t2', pierzator: 'L6_t2', status: 'wait' },
 
                 'W9': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'W11_t1', pierzator: 'L7_t2', status: 'wait' },
                 'W10': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'W11_t2', pierzator: 'L8_t2', status: 'wait' },
@@ -135,7 +141,57 @@
                 'L4': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L6_t1', status: 'wait' },
                 'L5': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L7_t1', status: 'wait' },
                 'L6': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L8_t1', status: 'wait' },
-                'L7': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L9_t1', status: 'wait' },
-                'L8': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L9_t2', status: 'wait' },
-                'L9': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'F1_t2', status: 'wait' },
+                'L7': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L9_t1', status: 'wait' },'L8': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'L9_t2', status: 'wait' },
+'L9': { t1: '', t2: '', s1: null, s2: null, urmatorul: 'F1_t2', status: 'wait' },
+'F1': { t1: '', t2: '', s1: null, s2: null, status: 'wait' }
+};
+document.getElementById('setup').style.display = 'none';
+document.getElementById('bracket').style.display = 'block';
+randeazaTablou();
+}
+function randeazaMeci(id, eticheta) {
+const m = meciuri[id];
+const esteActiv = (m.t1 && m.t2 && m.status !== 'done');
+return <div class="matchup ${esteActiv ? 'active' : ''}"> <div class="match-title">${eticheta}</div> <div class="slot"><span>${m.t1 || '<i>Așteaptă</i>'}</span> ${esteActiv ?:${m.s1 !== null ? m.s1 : ''}}</div> <div class="slot"><span>${m.t2 || '<i>Așteaptă</i>'}</span> ${esteActiv ? :${m.s2 !== null ? m.s2 : ''}}</div> ${esteActiv ? Trimite Scor: ''} </div>;
+}
+function randeazaTablou() {
+document.getElementById('w-r1').innerHTML = randeazaMeci('W1', 'Meci 1') + randeazaMeci('W2', 'Meci 2') + randeazaMeci('W3', 'Meci 3') + randeazaMeci('W4', 'Meci 4');
+document.getElementById('w-r2').innerHTML = randeazaMeci('W5', 'Meci 5') + randeazaMeci('W6', 'Meci 6') + randeazaMeci('W7', 'Meci 7') + randeazaMeci('W8', 'Meci 8');
+document.getElementById('w-r3').innerHTML = randeazaMeci('W9', 'Meci 13') + randeazaMeci('W10', 'Meci 14');
+document.getElementById('w-r4').innerHTML = randeazaMeci('W11', 'Finala Winners');
+document.getElementById('l-r1').innerHTML = randeazaMeci('L1', 'Meci 9') + randeazaMeci('L2', 'Meci 10');
+document.getElementById('l-r2').innerHTML = randeazaMeci('L3', 'Meci 11') + randeazaMeci('L4', 'Meci 12');
+document.getElementById('l-r3').innerHTML = randeazaMeci('L5', 'Meci 15') + randeazaMeci('L6', 'Meci 16');
+document.getElementById('l-r4').innerHTML = randeazaMeci('L7', 'Meci 17') + randeazaMeci('L8', 'Meci 18');
+document.getElementById('l-r5').innerHTML = randeazaMeci('L9', 'Finala Losers');
+document.getElementById('grand-final').innerHTML = randeazaMeci('F1', 'Marea Finală');
+}
+function salveazaScor(id) {
+const sc1 = parseInt(document.getElementById(s1_${id}).value);
+const sc2 = parseInt(document.getElementById(s2_${id}).value);
+if (isNaN(sc1) || isNaN(sc2) || sc1 === sc2) {
+alert("Te rog introdu un scor valid (fără egalitate!).");
+return;
+}
+const m = meciuri[id];
+m.s1 = sc1;
+m.s2 = sc2;
+m.status = 'done';
+const castigator = sc1 > sc2 ? m.t1 : m.t2;
+const pierzator = sc1 > sc2 ? m.t2 : m.t1;
+if (m.urmatorul) {
+const [urmatorId, slot] = m.urmatorul.split('_');
+meciuri[urmatorId][slot] = castigator;
+}
+if (m.pierzator) {
+const [pierzatorId, slot] = m.pierzator.split('_');
+meciuri[pierzatorId][slot] = pierzator;
+}
+if (id === 'F1') {
+alert(Turneul s-a încheiat! Campioană: ${castigator});
+}
+randeazaTablou();
+}
+
+
 
